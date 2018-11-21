@@ -25,7 +25,7 @@ class Register extends React.Component {
 
   onSubmitRegister = () => {
     if (!this.state.email || !this.state.name || !this.state.password){
-      alert('Please complete fields.');
+      alert('Please complete all fields.');
       return;
     }
     fetch('https://face-det-api.herokuapp.com/register', {
