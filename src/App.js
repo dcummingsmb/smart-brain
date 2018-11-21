@@ -32,7 +32,7 @@ const particlesOptions = {
 const initialState = {
   input: '',
   imageURL: '',
-  box: {},
+  box: [],
   route: 'signin',
   isSignedIn: false,
   user: {
@@ -63,16 +63,31 @@ class App extends Component {
   }
 
   calculateFaceLocation = (data) => {
-    const clarifaiFace = data.outputs[0].data.regions[0].region_info.bounding_box;
+    //const clarifaiFace = data.outputs[0].data.regions[0].region_info.bounding_box;
     const image = document.getElementById('inputimage');
     const width = image.width;
     const height = image.height;
+    //console.log(data.outputs[0].data.regions);
+    const faces = data.outputs[0].data.regions.map((region, index) => {
+      return({
+        leftCol: region.region_info.bounding_box.left_col * width,
+        topRow: region.region_info.bounding_box.top_row * height,
+        rightCol: width - (region.region_info.bounding_box.right_col * width),
+        bottomRow: height - (region.region_info.bounding_box.bottom_row * height)
+      })
+    })
+
+    console.log('faces', faces);
+    return faces;
+    
+    /*
     return {
       leftCol: clarifaiFace.left_col * width,
       topRow: clarifaiFace.top_row * height,
       rightCol: width - (clarifaiFace.right_col * width),
       bottomRow: height - (clarifaiFace.bottom_row * height)
     }
+    */
   }
   
   displayFaceBox = (box) => {
